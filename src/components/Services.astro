@@ -1,0 +1,94 @@
+---
+const services = [
+  {
+    name: "Recurring Cleaning",
+    description:
+      "Biweekly or monthly visits from the same team, so your home stays consistently clean and you never have to explain your preferences twice.",
+  },
+  {
+    name: "Deep Cleaning",
+    description:
+      "A thorough, top-to-bottom clean — great as a first visit or a seasonal reset before switching to a recurring schedule.",
+  },
+  {
+    name: "Move-In/Move-Out Cleaning",
+    description:
+      "An empty home gets cleaned corner to corner, so you can hand over keys — or move in — with a fresh start.",
+  },
+  {
+    name: "Airbnb Turnover Cleaning",
+    description:
+      "Fast, reliable turnovers between guests, so your listing is always ready for the next check-in.",
+  },
+  {
+    name: "Office Cleaning",
+    description:
+      "Small offices and workspaces cleaned on a schedule that fits your team's hours.",
+  },
+];
+---
+
+<section id="services" class="services section section-alt">
+  <div class="container">
+    <p class="eyebrow">What We Do</p>
+    <h2>Cleaning Services Built Around Your Home</h2>
+    <div class="services-grid">
+      {
+        services.map((service) => (
+          <article class="service-card">
+            <h3>{service.name}</h3>
+            <p>{service.description}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="services-note">
+      Getting a quick estimate is simple — just send a photo or video of the
+      space and we'll take care of it from there.
+    </p>
+  </div>
+</section>
+
+<style>
+  .services-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .service-card {
+    background: var(--color-bg);
+    border: 1px solid rgba(27, 75, 102, 0.1);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+
+  .service-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-card p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .services-note {
+    margin-top: 1.5rem;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+</style>

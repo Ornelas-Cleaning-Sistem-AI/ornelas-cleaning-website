@@ -1,0 +1,55 @@
+---
+import { SERVICE_AREA_CITIES } from "../lib/service-area";
+---
+
+<section id="service-area" class="service-area section">
+  <div class="container">
+    <p class="eyebrow">Where We Work</p>
+    <h2>Serving Boston and the North Shore</h2>
+    <p class="service-area-intro">
+      We keep our coverage area tight on purpose — it's how the same team can
+      show up for every visit. Here's where we clean:
+    </p>
+    <ul class="city-list">
+      {SERVICE_AREA_CITIES.map((city) => <li>{city}</li>)}
+    </ul>
+    <p class="service-area-note">
+      Not sure if your address is covered? Text us and we'll let you know.
+    </p>
+  </div>
+</section>
+
+<style>
+  .service-area-intro {
+    max-width: 40rem;
+  }
+
+  .city-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 1rem;
+    padding: 0;
+    margin: 1.5rem 0;
+    max-width: 32rem;
+  }
+
+  @media (min-width: 640px) {
+    .city-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .city-list li {
+    background: var(--color-white);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    font-weight: 500;
+    border-left: 3px solid var(--color-secondary);
+  }
+
+  .service-area-note {
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+</style>

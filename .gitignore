@@ -1,0 +1,32 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.*
+
+# other framework build outputs (not used here, kept for safety)
+build/
+.next/
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# any raw/working photo folder accidentally created inside this repo
+*-fotos-raw/
+raw/

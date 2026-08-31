@@ -1,0 +1,50 @@
+---
+const PHONE_SMS = "sms:+16178675878";
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">Boston &amp; the North Shore</p>
+    <h1>The Same Trusted Team Cleans Your Home, Every Time</h1>
+    <p class="hero-subhead">
+      Reliable, recurring house cleaning across Boston and the North Shore,
+      personally handled by Helena and her husband from your first estimate
+      to every visit after.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-primary hero-cta" href="#estimate">
+        Get Your Free Estimate
+      </a>
+      <a class="btn btn-secondary" href={PHONE_SMS}> Text Us — We Reply Fast </a>
+    </div>
+    <p class="hero-note">
+      Quick estimate — just send a photo or video. It's Helena, not a call
+      center.
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, #eaf2f6 0%, var(--color-bg) 100%);
+    padding: 3rem 0 2.5rem;
+  }
+
+  .hero-inner {
+    max-width: 42rem;
+  }
+
+  .hero-subhead {
+    font-size: 1.1rem;
+  }
+
+  .hero-cta {
+    font-size: 1.05rem;
+  }
+
+  .hero-note {
+    margin-top: 1rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+</style>

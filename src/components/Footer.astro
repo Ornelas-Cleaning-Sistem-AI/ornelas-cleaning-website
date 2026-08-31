@@ -1,0 +1,78 @@
+---
+import { SERVICE_AREA_CITIES } from "../lib/service-area";
+
+const PHONE_TEL = "tel:+16178675878";
+const EMAIL = "mailto:ornelascleaning@gmail.com";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="footer-brand">Ornelas Cleaning</p>
+      <p>
+        <a href={PHONE_TEL}>(617) 867-5878</a> ·
+        <a href={EMAIL}>ornelascleaning@gmail.com</a>
+      </p>
+    </div>
+    <div>
+      <p class="footer-heading">Proudly serving</p>
+      <p class="footer-cities">{SERVICE_AREA_CITIES.join(" · ")}</p>
+    </div>
+  </div>
+  <div class="container">
+    <p class="footer-fine-print">
+      © {year} Ornelas Cleaning. Family-run, personally handled by Helena
+      Ornelas and her husband.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 2.5rem 0 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .site-footer a {
+    color: var(--color-white);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .footer-brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .footer-heading {
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .footer-cities {
+    max-width: 28rem;
+    opacity: 0.9;
+  }
+
+  .footer-fine-print {
+    margin-top: 1.5rem;
+    opacity: 0.75;
+    font-size: 0.85rem;
+  }
+</style>
