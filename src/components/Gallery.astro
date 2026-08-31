@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/images/*.jpg",
+  { eager: true },
+);
+
+const labels: Record<string, string> = {
+  "kitchen-01": "Kitchen, cleaned and ready",
+  "kitchen-02": "Kitchen and dining area",
+  "kitchen-03": "Kitchen counters and floor, spotless",
+  "kitchen-04-fridge": "Stainless steel, streak-free",
+  "living-room-01": "Living room, tidy and dust-free",
+  "living-room-02": "Open living and kitchen area",
+  "bedroom-01": "Bedroom, freshly made",
+  "bedroom-02": "Bedroom, ready to relax in",
+  "bathroom-01": "Bathroom vanity and floor",
+  "bathroom-02-sink": "Bathroom sink, wiped down",
+  "bathroom-03-toilet": "Toilet, sanitized",
+  "bathroom-04-shower": "Shower stall, spotless",
+  "bathroom-05-tub": "Bathtub, scrubbed clean",
+  "bathroom-06-towels": "Bathroom, staged and fresh",
+  "bathroom-07-vanity": "Bathroom vanity area",
+  "empty-room-hardwood": "Move-out clean, hardwood floor",
+};
+
+const images = Object.entries(imageModules)
+  .map(([path, mod]) => {
+    const fileName = path.split("/").pop()?.replace(".jpg", "") ?? path;
+    return {
+      src: mod.default,
+      alt: labels[fileName] ?? "Ornelas Cleaning — real client home",
+    };
+  })
+  .sort((a, b) => a.alt.localeCompare(b.alt));
+---
+
+<section id="gallery" class="gallery section">
+  <div class="container">
+    <p class="eyebrow">Our Work</p>
+    <h2>Real Homes, Real Results</h2>
+    <p class="gallery-intro">
+      Photos from real cleanings we've done for our clients across Boston
+      and the North Shore.
+    </p>
+    <div class="gallery-grid">
+      {
+        images.map((image) => (
+          <div class="gallery-item">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={480}
+              height={640}
+              loading="lazy"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-intro {
+    max-width: 40rem;
+  }
+
+  .gallery-grid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .gallery-item {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-white);
+    box-shadow: 0 1px 3px rgba(27, 75, 102, 0.08);
+  }
+
+  .gallery-item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 3 / 4;
+  }
+</style>

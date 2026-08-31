@@ -1,0 +1,95 @@
+---
+const steps = [
+  {
+    title: "Send a Photo or Video",
+    description:
+      "Show us the space you'd like cleaned — a quick photo or video is all it takes to get started.",
+  },
+  {
+    title: "Get Your Estimate",
+    description:
+      "Helena reviews it personally and sends you a straightforward estimate — no guesswork, no pressure.",
+  },
+  {
+    title: "Book Your First Cleaning",
+    description: "Pick a date that works for you and we'll take care of it.",
+  },
+  {
+    title: "Go Recurring",
+    description:
+      "Like what you see? Move to a biweekly or monthly schedule with the same team, every time.",
+  },
+];
+---
+
+<section id="how-it-works" class="how-it-works section">
+  <div class="container">
+    <p class="eyebrow">How It Works</p>
+    <h2>From First Estimate to Recurring Care</h2>
+    <ol class="steps-list">
+      {
+        steps.map((step, index) => (
+          <li class="step">
+            <span class="step-number" aria-hidden="true">
+              {index + 1}
+            </span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .steps-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(27, 75, 102, 0.08);
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: var(--font-heading);
+  }
+
+  .step h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+const stats = [
+  { value: "24", label: "recurring clients trust us with their homes" },
+  { value: "Same team", label: "every time — never a rotating crew" },
+  { value: "Boston + North Shore", label: "the only area we work, so we know it well" },
+];
+---
+
+<section class="social-proof section">
+  <div class="container">
+    <div class="stats-grid">
+      {
+        stats.map((stat) => (
+          <div class="stat-card">
+            <p class="stat-value">{stat.value}</p>
+            <p class="stat-label">{stat.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .stat-card {
+    background: var(--color-white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(27, 75, 102, 0.08);
+  }
+
+  .stat-value {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .stat-label {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+</style>

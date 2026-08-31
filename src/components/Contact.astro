@@ -1,0 +1,178 @@
+---
+const PHONE_TEL = "tel:+16178675878";
+const PHONE_SMS = "sms:+16178675878";
+const EMAIL = "mailto:ornelascleaning@gmail.com";
+---
+
+<section id="estimate" class="contact section section-alt">
+  <div class="container contact-inner">
+    <p class="eyebrow">Get in Touch</p>
+    <h2>Get Your Free Estimate</h2>
+    <p>
+      Text us, we reply fast — or use the form below and we'll get an email
+      with everything we need.
+    </p>
+
+    <div class="contact-cta-row btn-row">
+      <a class="btn btn-primary" href={PHONE_SMS}>Text Us</a>
+      <a class="btn btn-secondary" href={PHONE_TEL}>Call (617) 867-5878</a>
+      <a class="btn btn-secondary" href={EMAIL}>Email Us</a>
+    </div>
+
+    <form id="estimate-form" class="estimate-form" novalidate>
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="form-row">
+        <label for="cityOrAddress">City / Address</label>
+        <input
+          id="cityOrAddress"
+          name="cityOrAddress"
+          type="text"
+          autocomplete="address-level2"
+          placeholder="e.g. Newton, MA"
+          required
+        />
+        <p id="city-coverage-note" class="city-note" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="form-row">
+        <label for="serviceType">Service Type</label>
+        <select id="serviceType" name="serviceType" required>
+          <option value="">Select a service</option>
+          <option value="Recurring Cleaning">Recurring Cleaning</option>
+          <option value="Deep Cleaning">Deep Cleaning</option>
+          <option value="Move-In/Move-Out Cleaning">
+            Move-In/Move-Out Cleaning
+          </option>
+          <option value="Airbnb Turnover Cleaning">
+            Airbnb Turnover Cleaning
+          </option>
+          <option value="Office Cleaning">Office Cleaning</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="details">
+          Details <span class="optional">(a photo or video works too — just text it to us)</span>
+        </label>
+        <textarea
+          id="details"
+          name="details"
+          rows="4"
+          placeholder="Number of bedrooms/bathrooms, how often you'd like cleaning, anything else we should know"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary form-submit">
+        Email My Estimate Request
+      </button>
+      <p class="form-fine-print">
+        This opens your email app with everything filled in — nothing is
+        sent from this page.
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import { buildEstimateMailto } from "../lib/mailto";
+  import { isCityInServiceArea } from "../lib/service-area";
+
+  const form = document.getElementById("estimate-form") as HTMLFormElement | null;
+  const cityInput = document.getElementById("cityOrAddress") as HTMLInputElement | null;
+  const cityNote = document.getElementById("city-coverage-note");
+
+  if (cityInput && cityNote) {
+    cityInput.addEventListener("blur", () => {
+      const value = cityInput.value.trim();
+      if (value === "") {
+        cityNote.textContent = "";
+        return;
+      }
+      cityNote.textContent = isCityInServiceArea(value)
+        ? "Great — we cover that area."
+        : "We may not cover that area yet — text us and we'll let you know.";
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const mailto = buildEstimateMailto({
+        name: String(data.get("name") ?? ""),
+        cityOrAddress: String(data.get("cityOrAddress") ?? ""),
+        serviceType: String(data.get("serviceType") ?? ""),
+        details: String(data.get("details") ?? ""),
+      });
+      window.location.href = mailto;
+    });
+  }
+</script>
+
+<style>
+  .contact-inner {
+    max-width: 36rem;
+  }
+
+  .contact-cta-row {
+    margin: 1.25rem 0 2rem 0;
+  }
+
+  .estimate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-row label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: #555;
+    font-size: 0.85rem;
+  }
+
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid rgba(27, 75, 102, 0.3);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background: var(--color-white);
+    color: var(--color-text);
+  }
+
+  .city-note {
+    margin: 0;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    color: var(--color-primary);
+  }
+
+  .form-submit {
+    align-self: flex-start;
+  }
+
+  .form-fine-print {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #555;
+  }
+</style>
