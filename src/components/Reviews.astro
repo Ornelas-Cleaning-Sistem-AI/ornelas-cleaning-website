@@ -1,0 +1,195 @@
+---
+import reviewsData from "../data/reviews.json";
+import { REVIEW_URL } from "../lib/site";
+
+interface Review {
+  name: string; // first name + initial, e.g. "Jane D."
+  date: string; // "YYYY-MM"
+  rating: number; // 1-5
+  text: string;
+}
+
+// Only real reviews go in src/data/reviews.json. Empty file = empty state.
+const reviews = reviewsData as Review[];
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function formatDate(yyyyMm: string): string {
+  const [y, m] = yyyyMm.split("-");
+  const idx = Number(m) - 1;
+  return MONTHS[idx] ? `${MONTHS[idx]} ${y}` : yyyyMm;
+}
+
+const STAR_PATH =
+  "M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9L12 2.5Z";
+---
+
+<section id="reviews" class="reviews section section-alt">
+  <div class="container">
+    <div class="section-heading section-heading--center">
+      <p class="eyebrow">Reviews</p>
+      <h2>What Our Clients Say</h2>
+      <div class="google-badge">
+        <span class="google-g" aria-hidden="true">G</span>
+        <span class="google-label">Google Reviews</span>
+        <span class="stars" aria-hidden="true">
+          {[1, 2, 3, 4, 5].map(() => (
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" stroke="none" focusable="false"><path d={STAR_PATH} /></svg>
+          ))}
+        </span>
+      </div>
+    </div>
+
+    {
+      reviews.length === 0 ? (
+        <div class="reviews-empty card">
+          <p class="lead">Cleaned with us? We'd love to hear how it went.</p>
+          <a class="btn btn-primary" href={REVIEW_URL} target="_blank" rel="noopener">
+            Leave us a review<span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </div>
+      ) : (
+        <div class="reviews-track" role="region" aria-label="Client reviews" tabindex="0">
+          {reviews.map((review) => (
+            <article class="review-card">
+              <div class="review-rating">
+                <span class="stars" aria-hidden="true">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <svg class="star" viewBox="0 0 24 24" fill={n <= review.rating ? "currentColor" : "rgba(11,74,139,.18)"} stroke="none" focusable="false"><path d={STAR_PATH} /></svg>
+                  ))}
+                </span>
+                <span class="visually-hidden">{review.rating} out of 5 stars</span>
+              </div>
+              <blockquote>{review.text}</blockquote>
+              <footer class="review-footer">
+                <cite>{review.name}</cite>
+                <time class="text-small text-muted" datetime={review.date}>{formatDate(review.date)}</time>
+              </footer>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: var(--space-2) var(--space-4);
+    margin-top: var(--space-4);
+    background: var(--color-white);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .google-g {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.875rem;
+    line-height: 1;
+  }
+
+  .google-label {
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--color-accent-strong);
+  }
+
+  .star {
+    width: 16px;
+    height: 16px;
+  }
+
+  .reviews-empty {
+    max-width: var(--container-narrow);
+    margin-inline: auto;
+    padding: var(--space-8);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .reviews-empty .lead {
+    margin: 0;
+  }
+
+  .reviews-track {
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--container-padding);
+    padding-inline: var(--container-padding);
+    margin-inline: calc(-1 * var(--container-padding));
+    scrollbar-width: thin;
+    padding-bottom: var(--space-2);
+  }
+
+  .review-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+  }
+
+  .review-card blockquote {
+    margin: 0;
+  }
+
+  .review-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .review-footer cite {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  @media (min-width: 768px) {
+    .reviews-track {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+      overflow: visible;
+      padding-inline: 0;
+      margin-inline: 0;
+    }
+    .review-card {
+      flex: none;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .reviews-track {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
