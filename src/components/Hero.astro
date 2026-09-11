@@ -1,50 +1,125 @@
 ---
-const PHONE_SMS = "sms:+16178675878";
+import { Image } from "astro:assets";
+import heroImage from "../assets/premium/hero.webp";
+import { PHONE_SMS } from "../lib/site";
 ---
 
 <section class="hero">
   <div class="container hero-inner">
-    <p class="eyebrow">Boston &amp; the North Shore</p>
-    <h1>The Same Trusted Team Cleans Your Home, Every Time</h1>
-    <p class="hero-subhead">
-      Reliable, recurring house cleaning across Boston and the North Shore,
-      personally handled by Helena and her husband from your first estimate
-      to every visit after.
-    </p>
-    <div class="btn-row">
-      <a class="btn btn-primary hero-cta" href="#estimate">
-        Get Your Free Estimate
-      </a>
-      <a class="btn btn-secondary" href={PHONE_SMS}> Text Us — We Reply Fast </a>
+    <div class="hero-copy">
+      <p class="eyebrow">Boston &amp; the North Shore</p>
+      <h1>The Same Trusted Team Cleans Your Home, Every Time</h1>
+      <p class="lead hero-subhead">
+        Reliable, recurring house cleaning across Boston and the North Shore,
+        personally handled by Helena and her husband from your first estimate
+        to every visit after.
+      </p>
+      <div class="btn-row hero-actions">
+        <a class="btn btn-primary" href="#estimate">
+          Get Your Free Estimate
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+        <a class="btn btn-secondary" href={PHONE_SMS}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+          </svg>
+          Text Us — We Reply Fast
+        </a>
+      </div>
+      <p class="hero-note text-small text-muted">
+        Quick estimate — just send a photo or video. It's Helena, not a call
+        center.
+      </p>
     </div>
-    <p class="hero-note">
-      Quick estimate — just send a photo or video. It's Helena, not a call
-      center.
-    </p>
+
+    <div class="hero-media">
+      <svg class="hero-sparkle" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" focusable="false">
+        <path d="M12 2c.6 4.8 3.2 7.4 8 8-4.8.6-7.4 3.2-8 8-.6-4.8-3.2-7.4-8-8 4.8-.6 7.4-3.2 8-8Z"/>
+      </svg>
+      <Image
+        src={heroImage}
+        alt="Sunlit living room with a linen sofa, a light blue pillow and light oak floors"
+        width={1080}
+        widths={[420, 720, 1080]}
+        sizes="(min-width:1280px) 525px, (min-width:768px) 46vw, calc(100vw - 40px)"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        format="webp"
+      />
+    </div>
   </div>
 </section>
 
 <style>
   .hero {
-    background: linear-gradient(180deg, #eaf2f6 0%, var(--color-bg) 100%);
-    padding: 3rem 0 2.5rem;
+    background: var(--color-bg);
+    padding-block: var(--space-8) var(--space-16);
   }
 
   .hero-inner {
-    max-width: 42rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
+    align-items: center;
+  }
+
+  .hero-media {
+    order: -1;
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-card);
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero-sparkle {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    color: var(--color-accent);
+  }
+
+  .hero-copy h1 {
+    max-width: 14ch;
   }
 
   .hero-subhead {
-    font-size: 1.1rem;
+    margin-top: var(--space-5);
   }
 
-  .hero-cta {
-    font-size: 1.05rem;
+  .hero-actions {
+    margin-top: var(--space-8);
   }
 
   .hero-note {
-    margin-top: 1rem;
-    color: var(--color-primary);
+    margin-top: var(--space-4);
     font-weight: 500;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--space-20) var(--space-24);
+    }
+
+    .hero-inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+      gap: var(--space-16);
+    }
+
+    .hero-media {
+      order: 0;
+    }
   }
 </style>

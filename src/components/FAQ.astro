@@ -29,14 +29,21 @@ const faqs = [
 ---
 
 <section id="faq" class="faq section section-alt">
-  <div class="container faq-inner">
-    <p class="eyebrow">Questions</p>
-    <h2>Frequently Asked Questions</h2>
+  <div class="container container-narrow">
+    <div class="section-heading">
+      <p class="eyebrow">Questions</p>
+      <h2>Frequently Asked Questions</h2>
+    </div>
     <div class="faq-list">
       {
         faqs.map((faq) => (
           <details class="faq-item">
-            <summary>{faq.question}</summary>
+            <summary>
+              <span>{faq.question}</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </summary>
             <p>{faq.answer}</p>
           </details>
         ))
@@ -46,31 +53,61 @@ const faqs = [
 </section>
 
 <style>
-  .faq-inner {
-    max-width: 44rem;
-  }
-
-  .faq-list {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
   .faq-item {
-    background: var(--color-bg);
-    border: 1px solid rgba(27, 75, 102, 0.12);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
+    background: transparent;
+    border: 0;
+  }
+
+  .faq-item + .faq-item {
+    border-top: 1px solid var(--color-line);
   }
 
   .faq-item summary {
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5) 0;
+    min-height: 3.5rem;
     cursor: pointer;
-    font-family: var(--font-heading);
+    list-style: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    color: var(--color-primary);
+    transition: color var(--duration) var(--ease);
   }
 
-  .faq-item p {
-    margin: 0.75rem 0 0 0;
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary:hover,
+  .faq-item[open] summary {
+    color: var(--color-accent-strong);
+  }
+
+  .faq-item summary:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .faq-chevron {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: var(--color-accent-strong);
+    transition: transform var(--duration) var(--ease);
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-item > p {
+    padding: 0 0 var(--space-5);
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: var(--prose-max);
   }
 </style>

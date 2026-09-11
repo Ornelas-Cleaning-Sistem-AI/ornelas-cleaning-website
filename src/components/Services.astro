@@ -1,48 +1,87 @@
 ---
+import { Image } from "astro:assets";
+import imgRecurring from "../assets/premium/service-recurring.webp";
+import imgDeep from "../assets/premium/service-deep.webp";
+import imgMove from "../assets/premium/service-move.webp";
+import imgAirbnb from "../assets/premium/service-airbnb.webp";
+import imgOffice from "../assets/premium/service-office.webp";
+
 const services = [
   {
     name: "Recurring Cleaning",
     description:
       "Biweekly or monthly visits from the same team, so your home stays consistently clean and you never have to explain your preferences twice.",
+    image: imgRecurring,
+    alt: "Tidy white kitchen with quartz counters, a bowl of fruit and a folded light blue towel",
   },
   {
     name: "Deep Cleaning",
     description:
       "A thorough, top-to-bottom clean — great as a first visit or a seasonal reset before switching to a recurring schedule.",
+    image: imgDeep,
+    alt: "Spotless white tile bathroom with folded towels and gleaming chrome fixtures",
   },
   {
     name: "Move-In/Move-Out Cleaning",
     description:
       "An empty home gets cleaned corner to corner, so you can hand over keys — or move in — with a fresh start.",
+    image: imgMove,
+    alt: "Empty freshly cleaned room with light hardwood floors and a bright window",
   },
   {
     name: "Airbnb Turnover Cleaning",
     description:
       "Fast, reliable turnovers between guests, so your listing is always ready for the next check-in.",
+    image: imgAirbnb,
+    alt: "Guest bedroom made up hotel-style with white bedding and rolled towels",
   },
   {
     name: "Office Cleaning",
     description:
       "Small offices and workspaces cleaned on a schedule that fits your team's hours.",
+    image: imgOffice,
+    alt: "Small tidy office with light wood desks, blue chairs and tall windows",
   },
 ];
 ---
 
 <section id="services" class="services section section-alt">
   <div class="container">
-    <p class="eyebrow">What We Do</p>
-    <h2>Cleaning Services Built Around Your Home</h2>
+    <div class="section-heading">
+      <p class="eyebrow">What We Do</p>
+      <h2>Cleaning Services Built Around Your Home</h2>
+    </div>
     <div class="services-grid">
       {
         services.map((service) => (
-          <article class="service-card">
-            <h3>{service.name}</h3>
-            <p>{service.description}</p>
+          <article class="service-card card card--lift">
+            <div class="service-media">
+              <Image
+                src={service.image}
+                alt={service.alt}
+                width={720}
+                widths={[400, 720]}
+                sizes="(min-width:1280px) 384px, (min-width:768px) 48vw, calc(100vw - 40px)"
+                loading="lazy"
+                decoding="async"
+                format="webp"
+              />
+            </div>
+            <div class="service-body">
+              <h3>{service.name}</h3>
+              <p class="text-muted">{service.description}</p>
+              <a class="link-arrow" href="#estimate" aria-label={`Get estimate for ${service.name}`}>
+                Get estimate
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+                </svg>
+              </a>
+            </div>
           </article>
         ))
       }
     </div>
-    <p class="services-note">
+    <p class="lead services-note">
       Getting a quick estimate is simple — just send a photo or video of the
       space and we'll take care of it from there.
     </p>
@@ -52,43 +91,90 @@ const services = [
 <style>
   .services-grid {
     display: grid;
-    gap: 1.25rem;
     grid-template-columns: 1fr;
-    margin-top: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .services-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 960px) {
-    .services-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    gap: var(--space-5);
   }
 
   .service-card {
-    background: var(--color-bg);
-    border: 1px solid rgba(27, 75, 102, 0.1);
-    border-radius: var(--radius);
-    padding: 1.25rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  .service-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+  .service-media {
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
   }
 
-  .service-card p {
-    margin: 0;
-    font-size: 0.95rem;
+  .service-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms var(--ease);
+  }
+
+  .service-card:hover .service-media img {
+    transform: scale(1.03);
+  }
+
+  .service-body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .service-body p {
+    margin-bottom: var(--space-3);
+  }
+
+  .service-body .link-arrow {
+    margin-top: auto;
+  }
+
+  /* Whole card is clickable: the link's ::after covers the card. */
+  .service-card .link-arrow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   .services-note {
-    margin-top: 1.5rem;
+    margin-top: var(--space-10);
     font-weight: 500;
     color: var(--color-primary);
+  }
+
+  @media (min-width: 768px) {
+    .services-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .service-card {
+      grid-column: span 3;
+    }
+    .service-card:nth-child(5) {
+      grid-column: 2 / span 3;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .services-grid {
+      gap: var(--space-6);
+    }
+    .service-card {
+      grid-column: span 2;
+    }
+    .service-card:nth-child(4) {
+      grid-column: 2 / span 2;
+    }
+    .service-card:nth-child(5) {
+      grid-column: 4 / span 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card:hover .service-media img {
+      transform: none;
+    }
   }
 </style>

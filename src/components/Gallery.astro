@@ -1,61 +1,80 @@
 ---
 import { Image } from "astro:assets";
+import livingRoom01 from "../assets/images/living-room-01.jpg";
+import kitchen02 from "../assets/images/kitchen-02.jpg";
+import bathroom06 from "../assets/images/bathroom-06-towels.jpg";
+import kitchen03 from "../assets/images/kitchen-03.jpg";
+import emptyRoom from "../assets/images/empty-room-hardwood.jpg";
+import bathroom01 from "../assets/images/bathroom-01.jpg";
+import bathroom07 from "../assets/images/bathroom-07-vanity.jpg";
+import bedroom02 from "../assets/images/bedroom-02.jpg";
+import livingRoom02 from "../assets/images/living-room-02.jpg";
+import bathroom02 from "../assets/images/bathroom-02-sink.jpg";
+import bathroom03 from "../assets/images/bathroom-03-toilet.jpg";
+import bathroom04 from "../assets/images/bathroom-04-shower.jpg";
+import kitchen01 from "../assets/images/kitchen-01.jpg";
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/images/*.jpg",
-  { eager: true },
-);
-
-const labels: Record<string, string> = {
-  "kitchen-01": "Kitchen, cleaned and ready",
-  "kitchen-02": "Kitchen and dining area",
-  "kitchen-03": "Kitchen counters and floor, spotless",
-  "kitchen-04-fridge": "Stainless steel, streak-free",
-  "living-room-01": "Living room, tidy and dust-free",
-  "living-room-02": "Open living and kitchen area",
-  "bedroom-01": "Bedroom, freshly made",
-  "bedroom-02": "Bedroom, ready to relax in",
-  "bathroom-01": "Bathroom vanity and floor",
-  "bathroom-02-sink": "Bathroom sink, wiped down",
-  "bathroom-03-toilet": "Toilet, sanitized",
-  "bathroom-04-shower": "Shower stall, spotless",
-  "bathroom-05-tub": "Bathtub, scrubbed clean",
-  "bathroom-06-towels": "Bathroom, staged and fresh",
-  "bathroom-07-vanity": "Bathroom vanity area",
-  "empty-room-hardwood": "Move-out clean, hardwood floor",
-};
-
-const images = Object.entries(imageModules)
-  .map(([path, mod]) => {
-    const fileName = path.split("/").pop()?.replace(".jpg", "") ?? path;
-    return {
-      src: mod.default,
-      alt: labels[fileName] ?? "Ornelas Cleaning — real client home",
-    };
-  })
-  .sort((a, b) => a.alt.localeCompare(b.alt));
+// Real client-home photos only, in an explicit editorial order. Captions name
+// the room and nothing else (never a city, never a client). The 4:3 crop is
+// done in CSS with `--pos` (object-position) per photo.
+//
+// Privacy review (2026-09-11), files deliberately NOT listed here:
+// - bedroom-01.jpg: wall sign and wedding canvas with the clients' surname and
+//   faces, plus framed photos on both nightstands. A CSS crop would still ship
+//   the full file, so the photo is out.
+// - kitchen-04-fridge.jpg: party invitation on the fridge door with a child's
+//   name, a street address and an RSVP phone number.
+// - bathroom-05-tub.jpg: not a bathtub; a "before" shot of a sink with hair and
+//   the photographer's thumb in frame. Can't be captioned truthfully as work.
+const photos = [
+  { src: livingRoom01, caption: "Living room", pos: "50% 42%", feature: true },
+  { src: kitchen02, caption: "Kitchen and dining", pos: "50% 45%" },
+  { src: bathroom06, caption: "Bathroom", pos: "50% 50%" },
+  { src: kitchen03, caption: "Kitchen", pos: "50% 45%" },
+  { src: emptyRoom, caption: "Move-out clean", pos: "50% 40%" },
+  { src: bathroom01, caption: "Bathroom vanity", pos: "50% 50%" },
+  { src: bathroom07, caption: "Bathroom vanity", pos: "50% 50%" },
+  { src: bedroom02, caption: "Bedroom", pos: "50% 55%" },
+  { src: livingRoom02, caption: "Living room", pos: "50% 50%" },
+  { src: bathroom02, caption: "Bathroom sink", pos: "50% 50%" },
+  { src: bathroom03, caption: "Bathroom", pos: "50% 50%" },
+  { src: bathroom04, caption: "Shower", pos: "50% 50%" },
+  { src: kitchen01, caption: "Living room", pos: "50% 45%" },
+];
 ---
 
 <section id="gallery" class="gallery section">
   <div class="container">
-    <p class="eyebrow">Our Work</p>
-    <h2>Real Homes, Real Results</h2>
-    <p class="gallery-intro">
-      Photos from real cleanings we've done for our clients across Boston
-      and the North Shore.
-    </p>
-    <div class="gallery-grid">
+    <div class="section-heading">
+      <p class="eyebrow">Our Work</p>
+      <h2>Real Homes, Real Results</h2>
+      <p class="lead text-muted">
+        Photos from real cleanings we've done for our clients across Boston
+        and the North Shore.
+      </p>
+    </div>
+    <div class="work-grid">
       {
-        images.map((image) => (
-          <div class="gallery-item">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              width={480}
-              height={640}
-              loading="lazy"
-            />
-          </div>
+        photos.map((photo) => (
+          <figure class:list={["work-item", { "work-item--feature": photo.feature }]} style={`--pos: ${photo.pos}`}>
+            <div class="work-media">
+              <Image
+                src={photo.src}
+                alt={photo.caption}
+                width={photo.feature ? 1200 : 640}
+                widths={photo.feature ? [640, 960, 1200] : [400, 640, 960]}
+                sizes={
+                  photo.feature
+                    ? "(min-width:1280px) 590px, (min-width:768px) 49vw, calc(100vw - 40px)"
+                    : "(min-width:1280px) 285px, (min-width:768px) 24vw, calc(50vw - 26px)"
+                }
+                loading="lazy"
+                decoding="async"
+                format="webp"
+              />
+            </div>
+            <figcaption>{photo.caption}</figcaption>
+          </figure>
         ))
       }
     </div>
@@ -63,40 +82,62 @@ const images = Object.entries(imageModules)
 </section>
 
 <style>
-  .gallery-intro {
-    max-width: 40rem;
-  }
-
-  .gallery-grid {
-    margin-top: 1.5rem;
+  .work-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
-  @media (min-width: 640px) {
-    .gallery-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+  .work-item {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
 
-  @media (min-width: 960px) {
-    .gallery-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .gallery-item {
-    border-radius: var(--radius);
+  .work-media {
+    border-radius: 12px;
     overflow: hidden;
-    background: var(--color-white);
-    box-shadow: 0 1px 3px rgba(27, 75, 102, 0.08);
+    flex: 1;
+    min-height: 0;
   }
 
-  .gallery-item :global(img) {
+  .work-media img {
     width: 100%;
     height: 100%;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
-    aspect-ratio: 3 / 4;
+    object-position: var(--pos, 50% 50%);
+  }
+
+  .work-item--feature {
+    grid-column: span 2;
+  }
+
+  .work-item figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--text-caption);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .work-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+    .work-item--feature {
+      grid-row: span 2;
+    }
+    .work-item--feature img {
+      aspect-ratio: auto;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .work-grid {
+      gap: var(--space-5);
+    }
   }
 </style>

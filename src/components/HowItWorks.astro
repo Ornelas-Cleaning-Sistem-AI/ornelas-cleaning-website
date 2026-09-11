@@ -22,20 +22,22 @@ const steps = [
 ];
 ---
 
-<section id="how-it-works" class="how-it-works section">
+<section id="how-it-works" class="how-it-works section section-alt">
   <div class="container">
-    <p class="eyebrow">How It Works</p>
-    <h2>From First Estimate to Recurring Care</h2>
+    <div class="section-heading">
+      <p class="eyebrow">How It Works</p>
+      <h2>From First Estimate to Recurring Care</h2>
+    </div>
     <ol class="steps-list">
       {
         steps.map((step, index) => (
           <li class="step">
             <span class="step-number" aria-hidden="true">
-              {index + 1}
+              {String(index + 1).padStart(2, "0")}
             </span>
-            <div>
+            <div class="step-body">
               <h3>{step.title}</h3>
-              <p>{step.description}</p>
+              <p class="text-muted">{step.description}</p>
             </div>
           </li>
         ))
@@ -46,50 +48,77 @@ const steps = [
 
 <style>
   .steps-list {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0 0 0;
-    display: grid;
-    gap: 1.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .steps-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    position: relative;
   }
 
   .step {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    background: var(--color-white);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    box-shadow: 0 1px 3px rgba(27, 75, 102, 0.08);
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    column-gap: var(--space-4);
+    position: relative;
   }
 
   .step-number {
-    flex-shrink: 0;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: var(--color-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-family: var(--font-heading);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-step-number);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent-strong);
+    position: relative;
+    z-index: 1;
+    width: fit-content;
   }
 
-  .step h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.35rem;
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    top: calc(var(--text-step-number) + var(--space-2));
+    bottom: calc(-1 * var(--space-8) + var(--space-2));
+    border-left: 2px dashed rgba(11, 74, 139, 0.22);
   }
 
-  .step p {
+  .step-body p {
     margin: 0;
-    font-size: 0.95rem;
+  }
+
+  @media (min-width: 1024px) {
+    .steps-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+
+    .steps-list::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 20%;
+      top: calc(var(--text-step-number) / 2);
+      border-top: 2px dashed rgba(11, 74, 139, 0.22);
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step:not(:last-child)::after {
+      display: none;
+    }
+
+    .step-number {
+      background: var(--color-surface-alt);
+      padding-right: var(--space-3);
+    }
+
+    .step h3 {
+      margin-top: var(--space-4);
+    }
   }
 </style>
