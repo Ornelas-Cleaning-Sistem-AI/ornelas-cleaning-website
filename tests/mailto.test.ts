@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildEstimateMailto } from "../src/lib/mailto";
 
-const ESTIMATE_EMAIL = "ornelascleaning@gmail.com";
+const ESTIMATE_EMAIL = "cleaningornelas@gmail.com";
 
 describe("buildEstimateMailto", () => {
   it("targets the Ornelas Cleaning estimate inbox", () => {

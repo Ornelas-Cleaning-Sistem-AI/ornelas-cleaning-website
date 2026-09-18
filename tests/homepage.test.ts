@@ -49,7 +49,7 @@ describe("homepage content", () => {
   it("includes the contact channels: call, text, and email", () => {
     expect(html).toContain("tel:+16178675878");
     expect(html).toContain("sms:+16178675878");
-    expect(html).toContain("mailto:ornelascleaning@gmail.com");
+    expect(html).toContain("mailto:cleaningornelas@gmail.com");
   });
 
   it("includes all five services offered", () => {

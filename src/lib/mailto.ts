@@ -2,7 +2,7 @@
 // persistence — the browser's own mail client sends it. Keep this pure and
 // testable: no DOM access here, just string in, string out.
 
-const ESTIMATE_EMAIL = "ornelascleaning@gmail.com";
+const ESTIMATE_EMAIL = "cleaningornelas@gmail.com";
 
 export interface EstimateFormData {
   name: string;

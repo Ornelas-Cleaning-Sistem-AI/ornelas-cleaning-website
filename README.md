@@ -64,7 +64,7 @@ tests/
 - Type: Sora (headings) + Manrope (body), loaded from Google Fonts.
 - Contact numbers/emails are the real business ones and live in
   `src/lib/site.ts`: `(617) 867-5878` (call/text) and
-  `ornelascleaning@gmail.com`. `REVIEW_URL` there is a placeholder until the
+  `cleaningornelas@gmail.com`. `REVIEW_URL` there is a placeholder until the
   Google Business Profile review link is available.
 - Reviews: `src/data/reviews.json`. Empty array = the section shows a
   "Leave us a review" call to action. Only real reviews go in this file.

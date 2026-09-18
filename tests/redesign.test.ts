@@ -32,6 +32,14 @@ describe("redesign: sections", () => {
     expect(html).not.toContain("recurring clients trust us with their homes");
   });
 
+  // The trust strip carried an insurance claim until 2026-09-17. It shipped
+  // without paperwork backing the exact wording, so it is now a test failure
+  // rather than a judgement call. What has to be true before such wording
+  // ships is recorded in the company ledger — not here, this repo is public.
+  it("makes no insured/bonded claim anywhere on the page", () => {
+    expect(html.toLowerCase()).not.toMatch(/insured|bonded/);
+  });
+
   it("renders a reviews section with the Google label", () => {
     expect(html).toContain('id="reviews"');
     expect(html).toContain("Google");
