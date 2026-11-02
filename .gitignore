@@ -30,3 +30,4 @@ build/
 # any raw/working photo folder accidentally created inside this repo
 *-fotos-raw/
 raw/
+.claude/launch.json

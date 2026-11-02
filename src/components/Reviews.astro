@@ -48,6 +48,7 @@ const STAR_PATH =
           </a>
         </div>
       ) : (
+        <>
         <div class="reviews-track" role="region" aria-label="Client reviews" tabindex="0">
           {reviews.map((review) => (
             <article class="review-card">
@@ -67,6 +68,13 @@ const STAR_PATH =
             </article>
           ))}
         </div>
+
+        <p class="reviews-ask">
+          <a class="btn btn-secondary" href={REVIEW_URL} target="_blank" rel="noopener">
+            Leave us a review<span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </p>
+        </>
       )
     }
   </div>
@@ -130,6 +138,11 @@ const STAR_PATH =
 
   .reviews-empty .lead {
     margin: 0;
+  }
+
+  .reviews-ask {
+    margin: var(--space-6) 0 0;
+    text-align: center;
   }
 
   .reviews-track {
