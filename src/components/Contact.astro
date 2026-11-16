@@ -144,12 +144,27 @@ import { PHONE_DISPLAY, PHONE_TEL, PHONE_SMS, EMAIL } from "../lib/site";
         return;
       }
       const data = new FormData(form);
+      const cityOrAddress = String(data.get("cityOrAddress") ?? "");
+      const serviceType = String(data.get("serviceType") ?? "");
       const mailto = buildEstimateMailto({
         name: String(data.get("name") ?? ""),
-        cityOrAddress: String(data.get("cityOrAddress") ?? ""),
-        serviceType: String(data.get("serviceType") ?? ""),
+        cityOrAddress,
+        serviceType,
         details: String(data.get("details") ?? ""),
       });
+
+      // Conversao principal do site: pedido de orcamento enviado.
+      // Nao mandamos nome nem detalhes pro Analytics (dado pessoal do
+      // visitante nao tem por que sair daqui) — so o tipo de servico e se a
+      // cidade esta na area atendida, que e o que ajuda a decidir onde
+      // anunciar.
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "estimate_request", {
+          service_type: serviceType || "not_informed",
+          in_service_area: isCityInServiceArea(cityOrAddress),
+        });
+      }
+
       window.location.href = mailto;
     });
   }
