@@ -1,0 +1,61 @@
+---
+// Meta Pixel (Facebook / Instagram Ads).
+//
+// Mesma logica do GA4: o ID do Pixel NAO e segredo — ele e servido em texto
+// puro no HTML de toda pagina. Por isso pode viver aqui como reserva. O
+// META_CAPI_ACCESS_TOKEN, esse sim, e segredo e NUNCA pode sair do .env.
+//
+// A reserva existe porque o .env nao sobe pro GitHub: sem ela, o build da
+// Vercel sairia sem Pixel e ninguem perceberia.
+const META_PIXEL_ID_FALLBACK = "2073983199899955";
+
+const pixelId =
+  import.meta.env.PUBLIC_META_PIXEL_ID || META_PIXEL_ID_FALLBACK;
+---
+
+{
+  pixelId && (
+    <>
+      <script is:inline define:vars={{ pixelId }}>
+        {/* Snippet oficial do Meta. Ele mesmo atribui fbq ao window
+            (`n = f.fbq = ...`, com f === window), entao fbq fica GLOBAL e os
+            eventos de contato conseguem chama-lo depois. */}
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod
+              ? n.callMethod.apply(n, arguments)
+              : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = "2.0";
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(
+          window,
+          document,
+          "script",
+          "https://connect.facebook.net/en_US/fbevents.js",
+        );
+        window.fbq("init", pixelId);
+        window.fbq("track", "PageView");
+      </script>
+
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style="display:none"
+          alt=""
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+        />
+      </noscript>
+    </>
+  )
+}

@@ -1,0 +1,73 @@
+---
+// Mede os cliques de CONTATO — a conversao real do negocio.
+// Visita nao paga conta: o que importa e quantas pessoas clicaram pra ligar,
+// mandar mensagem ou escrever.
+//
+// Vive FORA do Analytics.astro e do MetaPixel.astro de proposito: um unico
+// listener alimenta os dois, e cada chamada e protegida por typeof. Assim, se
+// um dos rastreadores estiver desligado ou falhar ao carregar, o outro
+// continua medindo normalmente.
+//
+// Listener DELEGADO no document (um so, em vez de um por link): qualquer link
+// tel:/sms:/mailto: adicionado no futuro ja nasce medido, sem precisar lembrar
+// de instrumentar componente novo.
+---
+
+<script is:inline>
+  (function () {
+    // GA4 recebe nomes descritivos; o Meta recebe os eventos PADRAO dele
+    // (Contact), que e o que o algoritmo de anuncios sabe otimizar.
+    var EVENTS = {
+      "tel:": { ga: "click_to_call", meta: "Contact" },
+      "sms:": { ga: "click_to_text", meta: "Contact" },
+      "mailto:": { ga: "click_to_email", meta: "Contact" },
+    };
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        // event.target pode ser um no de texto ou o <svg> do icone dentro do
+        // link, entao sobe ate o elemento antes do closest().
+        var node = event.target;
+        if (node && node.nodeType !== 1) node = node.parentElement;
+        if (!node || typeof node.closest !== "function") return;
+
+        var link = node.closest("a[href]");
+        if (!link) return;
+
+        var href = link.getAttribute("href") || "";
+        var mapped = null;
+        for (var scheme in EVENTS) {
+          if (href.indexOf(scheme) === 0) {
+            mapped = EVENTS[scheme];
+            break;
+          }
+        }
+        if (!mapped) return;
+
+        // ONDE a pessoa clicou importa: se as conversoes vierem do rodape, o
+        // topo da pagina nao esta convencendo.
+        // `.top-bar` entra junto com <header> de proposito — ela e IRMA do
+        // <header> no DOM, nao filha, entao sozinho o closest("header")
+        // rotularia a barra do topo como corpo da pagina.
+        var where = link.closest("header, .top-bar")
+          ? "header"
+          : link.closest("footer")
+            ? "footer"
+            : "page_body";
+
+        if (typeof window.gtag === "function") {
+          window.gtag("event", mapped.ga, {
+            link_location: where,
+            link_text: (link.textContent || "").trim().slice(0, 80),
+          });
+        }
+
+        if (typeof window.fbq === "function") {
+          window.fbq("track", mapped.meta, { contact_method: mapped.ga });
+        }
+      },
+      true,
+    );
+  })();
+</script>

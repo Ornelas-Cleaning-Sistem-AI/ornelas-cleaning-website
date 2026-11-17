@@ -158,10 +158,21 @@ import { PHONE_DISPLAY, PHONE_TEL, PHONE_SMS, EMAIL } from "../lib/site";
       // visitante nao tem por que sair daqui) — so o tipo de servico e se a
       // cidade esta na area atendida, que e o que ajuda a decidir onde
       // anunciar.
+      const inServiceArea = isCityInServiceArea(cityOrAddress);
+
       if (typeof window.gtag === "function") {
         window.gtag("event", "estimate_request", {
           service_type: serviceType || "not_informed",
-          in_service_area: isCityInServiceArea(cityOrAddress),
+          in_service_area: inServiceArea,
+        });
+      }
+
+      // No Meta o nome padrao dessa conversao e "Lead" — e esse nome que o
+      // algoritmo de anuncios sabe otimizar.
+      if (typeof window.fbq === "function") {
+        window.fbq("track", "Lead", {
+          content_category: serviceType || "not_informed",
+          in_service_area: inServiceArea,
         });
       }
 

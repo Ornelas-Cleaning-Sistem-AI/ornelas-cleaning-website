@@ -36,63 +36,6 @@ const gaId =
         window.gtag("js", new Date());
         window.gtag("config", gaId);
       </script>
-
-      <script is:inline>
-        // Mede os cliques de CONTATO — a conversao real do negocio.
-        // Visita nao paga conta: o que importa e quantas pessoas clicaram pra
-        // ligar, mandar mensagem ou escrever.
-        //
-        // Listener DELEGADO no document (um so, em vez de um por link): assim
-        // qualquer link tel:/sms:/mailto: adicionado no futuro ja nasce medido,
-        // sem precisar lembrar de instrumentar componente novo.
-        (function () {
-          var EVENTS = {
-            "tel:": "click_to_call",
-            "sms:": "click_to_text",
-            "mailto:": "click_to_email",
-          };
-
-          document.addEventListener(
-            "click",
-            function (event) {
-              // event.target pode ser um no de texto ou o <svg> do icone
-              // dentro do link, entao sobe ate o elemento antes do closest().
-              var node = event.target;
-              if (node && node.nodeType !== 1) node = node.parentElement;
-              if (!node || typeof node.closest !== "function") return;
-
-              var link = node.closest("a[href]");
-              if (!link) return;
-
-              var href = link.getAttribute("href") || "";
-              var eventName = null;
-              for (var scheme in EVENTS) {
-                if (href.indexOf(scheme) === 0) {
-                  eventName = EVENTS[scheme];
-                  break;
-                }
-              }
-              if (!eventName || typeof window.gtag !== "function") return;
-
-              window.gtag("event", eventName, {
-                // ONDE a pessoa clicou importa: se as conversoes vierem do
-                // rodape, o topo da pagina nao esta convencendo.
-                // `.top-bar` entra junto com <header> de proposito — ela e
-                // irma do <header> no DOM, nao filha, entao sozinho o
-                // closest("header") rotularia a barra do topo como corpo da
-                // pagina e bagunçaria a leitura.
-                link_location: link.closest("header, .top-bar")
-                  ? "header"
-                  : link.closest("footer")
-                    ? "footer"
-                    : "page_body",
-                link_text: (link.textContent || "").trim().slice(0, 80),
-              });
-            },
-            true,
-          );
-        })();
-      </script>
     </>
   )
 }
